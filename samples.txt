@@ -1,0 +1,51 @@
+Case 1: 
+
+TO remove++++
+no snmp-server community dantest RO 97
+no snmp-server community dantest RW 97
+no snmp-server host 155.232.11.2 abdanyboy69# snmp
+no snmp-server host 155.232.11.3 abdanyboy69# snmp
+no snmp-server host 155.232.11.4 abdanyboy69# snmp
+
+
+
+TO input++
+ip access-list standard SNMP-ACL
+remark SNMP tooling
+permit 155.232.11.0 0.0.0.255
+
+snmp-server view ALL-ACCESS-VIEW iso included
+
+snmp-server group READ-GROUP v3 priv read ALL-ACCESS-VIEW access SNMP-ACL
+snmp-server user tdfdfmpv3_sha1 READ-GROUP v3 auth sha testab323 aes 128 zydfe783
+snmp-server host 155.232.11.2 traps version 3 priv tdfdfmpv3_sha1
+
+
+
+C1sco12345
+
+copy bootflash:old.conf running-config
+copy bootflash:new.conf running-config
+
+
+
+==========revert
+conf t
+snmp-server community dantest RO 97
+snmp-server community dantest RW 97
+snmp-server host 155.232.11.2 abdanyboy69# snmp
+snmp-server host 155.232.11.3 abdanyboy69# snmp
+snmp-server host 155.232.11.4 abdanyboy69# snmp
+
+ip access-list standard SNMP-ACL
+no remark SNMP tooling
+no permit 155.232.11.0 0.0.0.255
+no ip access-list standard SNMP-ACL
+
+no snmp-server view ALL-ACCESS-VIEW iso included
+
+no snmp-server group READ-GROUP v3 priv read ALL-ACCESS-VIEW access SNMP-ACL
+no snmp-server user tdfdfmpv3_sha1 READ-GROUP v3 auth sha testab323 aes 128 zydfe783
+no snmp-server host 155.232.11.2 traps version 3 priv tdfdfmpv3_sha1
+exit
+copy run start
