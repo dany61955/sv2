@@ -1,0 +1,10 @@
+conf t
+ip access-list standard SNMP-ACL
+remark SNMP tooling
+permit 155.232.11.0 0.0.0.255
+
+snmp-server view ALL-ACCESS-VIEW iso included
+
+snmp-server group READ-GROUP v3 priv read ALL-ACCESS-VIEW access SNMP-ACL
+snmp-server user tdfdfmpv3_sha1 READ-GROUP v3 auth sha testab323 aes 128 zydfe783
+
